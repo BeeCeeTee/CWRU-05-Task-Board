@@ -2,14 +2,18 @@
 let taskList = JSON.parse(localStorage.getItem("tasks"));
 let nextId = JSON.parse(localStorage.getItem("nextId"));
 
+function readTasksFromStorage() {
+    return taskList;
+};
+
 // Todo: create a function to generate a unique task id
 function generateTaskId() {
-
+    // const taskId = $(this).attr('')
 }
 
 // Todo: create a function to create a task card
 function createTaskCard(task) {
-
+    
 }
 
 // Todo: create a function to render the task list and make cards draggable
@@ -19,7 +23,21 @@ function renderTaskList() {
 
 // Todo: create a function to handle adding a new task
 function handleAddTask(event){
+    event.preventDefault();
 
+    const taskTitleInput = $('#taskTitle').val().trim();
+    const taskDueDateInput = $('#taskDueDate').val();
+    const taskDescriptionInput = $('#taskDescription').val().trim();
+
+    const newTask = {
+        title: taskTitleInput,
+        date: taskDueDateInput,
+        description: taskDescriptionInput
+    };
+
+    readTasksFromStorage();
+    taskList.push(newTask);
+    console.log(taskList);
 }
 
 // Todo: create a function to handle deleting a task
@@ -33,6 +51,17 @@ function handleDrop(event, ui) {
 }
 
 // Todo: when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
-$(document).ready(function () {
+$(document).ready(function () {   
+    renderTaskList();
+    $('#add-task').on('click', handleAddTask);
 
+    $('#taskDueDate').datepicker({
+    changeMonth: true,
+    changeYear: true,
+    });
+
+    $('.lane').droppable({
+    accept: '.draggable',
+    drop: handleDrop,
+  });
 });
