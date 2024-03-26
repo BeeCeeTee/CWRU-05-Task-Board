@@ -78,6 +78,7 @@ function renderTaskList() {
             : $(event.target).closest('.ui-draggable');
         
         return original.clone().css({
+          width: original.outerWidth()
         });
         },
     });
@@ -109,22 +110,26 @@ function handleAddTask(event){
     $('#formModal').modal('hide');
 }
 
-// Todo: create a function to handle deleting a task
+// Create a function to handle deleting a task
 function handleDeleteTask(event){
-  console.log(event);
-  tasks.splice(event.target.dataset.taskId-1);
+  tasks.splice(event.target.dataset.taskId-1,1);
+  nextId--
+  for (let index = 0; index < tasks.length; index++) {
+    tasks[index].id=index+1
+  }
   localStorage.setItem('tasks', JSON.stringify(tasks));
   renderTaskList();
 }
 
 // Create a function to handle dropping a task into a new status lane
 function handleDrop(event, ui) {
-  const taskId = ui.draggable[0].dataset.nextId;
+
+  const taskId = ui.draggable[0].dataset.taskId;
 
   const newStatus = event.target.id;
-
+console.log(taskId);
   for (let task of tasks) {
-    if (task.id === taskId) {
+    if (task.id == taskId) {
       task.status = newStatus;
     }
   }
